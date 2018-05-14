@@ -7,6 +7,8 @@ var (
 	Date string
 	// Commit git提交ID
 	Commit string
+	// git分支
+	Branch string
 )
 
 // Version 生成版本信息
@@ -24,6 +26,11 @@ func Version(prefix string) string {
 		buf.WriteByte('\n')
 		buf.WriteString("commit: ")
 		buf.WriteString(Commit)
+	}
+	if Branch != "" {
+		buf.WriteByte('\n')
+		buf.WriteString("branch: ")
+		buf.WriteString(Branch)
 	}
 	return buf.String()
 }

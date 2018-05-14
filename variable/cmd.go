@@ -3,9 +3,8 @@ package variable
 import (
 	"fmt"
 	"os/exec"
+	"runtime"
 	"strings"
-
-	"github.com/lmika/shellwords"
 )
 
 // CmdVar 命令变量
@@ -34,14 +33,11 @@ func (v *CmdVar) Eval(expr string, debug bool) (val string, err error) {
 }
 
 func (v *CmdVar) exec(nameAndArgs string) (output []byte, err error) {
-	fields := shellwords.Split(nameAndArgs)
 	var cmd *exec.Cmd
-	if len(fields) == 1 {
-		cmd = exec.Command(fields[0])
-	} else if len(fields) > 1 {
-		cmd = exec.Command(fields[0], fields[1:]...)
+	if runtime.GOOS == "windows" {
+		cmd = exec.Command("cmd", "/k", nameAndArgs)
 	} else {
-		panic("unreachable")
+		cmd = exec.Command("bash", "-c", nameAndArgs)
 	}
 
 	return cmd.Output()

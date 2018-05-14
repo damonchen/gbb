@@ -10,6 +10,10 @@
         {
             "variable": "Commit",
             "value": "{{.GitCommit}}"
+        },
+        {
+            "variable": "Branch",
+            "value": "$(git branch | grep '*' | awk {'print $2'})"
         }
     ]
 }
